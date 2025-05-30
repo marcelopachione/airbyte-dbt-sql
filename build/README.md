@@ -18,3 +18,22 @@ Stop Airbyte Container
     docker stop airbyte-abctl-control-plane
 
 ---    
+
+# Containers Postgres + PGAdmin Container
+
+Start Postgres + PGAdmin Containers
+
+    docker-compose -f docker-compose.yml up -d
+
+Stop Postgres + PGAdmin Containers
+
+    docker-compose down
+
+
+### Access PGAdmin
+
+Link
+
+    localhost:80
+
+![image](../build/assets/pgadmin_login.png)

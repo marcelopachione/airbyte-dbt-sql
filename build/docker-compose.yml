@@ -1,0 +1,67 @@
+name: airbyt-dbt-sql
+
+services:
+
+  pg_source:
+    platform: linux/amd64
+    image: postgres:latest
+    container_name: pg_source
+    hostname: pg_source
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: postgres 
+    ports:
+      - 5780:5432
+    volumes:
+      - ./storage/pg_source/postgres-db-volume:/var/lib/postgresql/data
+      - ./storage/pg_source:/util
+      - ./scripts:/scripts
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 5s
+      retries: 5
+
+  pg_target:
+    platform: linux/amd64
+    image: postgres:latest
+    container_name: pg_target
+    hostname: pg_target
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: postgres 
+    ports:
+      - 5785:5432
+    volumes:
+      - ./storage/pg_target/postgres-db-volume:/var/lib/postgresql/data
+      - ./storage/pg_target:/util
+      - ./scripts:/scripts
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 5s
+      retries: 5
+  
+  # pgadmin4:
+  #   image: dpage/pgadmin4:latest
+  #   container_name: pgadmin4
+  #   hostname: pgadmin
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: marcelo@email.com
+  #     PGADMIN_DEFAULT_PASSWORD: postgres
+  #   ports:
+  #     - 80:80
+
+  # dbeaver:
+  #   image: dbeaver/cloudbeaver:latest
+  #   container_name: dbeaver
+  #   hostname: dbeaver
+  #   volumes:
+  #     - ./storage/cloudbeaver/workspace:/opt/cloudbeaver/workspace
+  #     - ./scripts:/scripts
+  #   environment:
+  #     - CB_ADMIN_NAME=cbadmin
+  #     - CB_ADMIN_PASSWORD=Fiduma01
+  #   ports:
+  #     - 8978:8978
+  #   restart: unless-stopped
